@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import produce from 'immer'
 
 const numRows = 50
@@ -14,24 +14,37 @@ function App() {
     return rows
   });
 
-  return (
-    <div style={{display: 'grid', gridTemplateColumns: `repeat(${numCols}, 20px)`}}>
-      {grid.map((rows, i) => 
-        rows.map((col, k) => ( 
-        <div 
-          key={`${i}-${k}`}
-          onClick={() => {
+  const [running, setRunning] = useState(false)
 
-          }}
-          style={{width:20, 
-            height: 20, 
-            backgroundColor: grid[i][k] ? 'pink' : undefined,
-            border: '1px solid black'
-          }}
-          />
+  const runSimulation = useCallback(() => {
+
+  }, [])
+
+  return (
+    <>
+      <button onClick={() => {setRunning(!running)}}>{running ? 'stop' : 'start'}</button>
+
+      <div style={{display: 'grid', gridTemplateColumns: `repeat(${numCols}, 20px)`}}>
+        {grid.map((rows, i) => 
+          rows.map((col, k) => ( 
+            <div 
+              key={`${i}-${k}`}
+              onClick={() => {
+                const newGrid = produce(grid, gridCopy => {
+                  gridCopy[i][k] = grid[i][k] ? 0 : 1;
+                })
+                setGrid(newGrid)
+              }}
+              style={{width:20, 
+                height: 20, 
+                backgroundColor: grid[i][k] ? 'pink' : undefined,
+                border: '1px solid black'
+              }}
+            />
           ))
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
 
