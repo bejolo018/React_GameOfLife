@@ -69,8 +69,8 @@ function App() {
   return (
     <>
       <button onClick={() => {
-        if(!running){
         setRunning(!running)
+        if(!running){
         runningRef.current = true;
         runSimulation()
         }
